@@ -11,13 +11,19 @@ body {
     margin: 0;
     width: 100%;
     overflow: hidden;
+    transition: all .2s;
 }
 .slider__line {
+    margin: 0;
+    padding: 0;
     display: flex;
-    align-items: center;
     gap: 20px;
+    transition: all 1.5s;
 }
 .slider__item {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
     width: 380px;
     height: auto;
 }
@@ -32,8 +38,9 @@ body {
     color: #fff;
     background-color: rgb(8, 8, 8);
     cursor: pointer;
+    z-index: 5;
 }
-.btn-disabled {
+.disabled {
     background-color: rgba(8, 8, 8, 0.514);
 }
 .slider__btn-prev {
@@ -60,6 +67,7 @@ body {
     height: 20px;
     border-radius: 50%;
     background-color: rgb(8, 8, 8);
+    cursor: pointer;
 }
 .active {
     background-color: rgb(250, 191, 27);
