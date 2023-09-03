@@ -22,10 +22,21 @@ const setPosition = () => {
 };
 
 const checkBtns = () => {
-    btnPrev.classList.toggle('disabled', position === 0);
-    btnNext.classList.toggle('disabled', position <= -(itemsCount - slidesToShow) * itemWidth);
-    btnPrev.disabled = position === 0;
-    btnNext.disabled = position <= -(itemsCount - slidesToShow) * itemWidth;
+    const firstSlide = position === 0;
+    const lastSlide = position <= -(itemsCount - slidesToShow) * itemWidth;
+    const stopScroll = () => {
+        btnPrev.classList.toggle('disabled', firstSlide);
+        btnNext.classList.toggle('disabled', lastSlide);
+    }
+    btnPrev.disabled = firstSlide;  //не отрабатывает на самом старте, добавила проверку в событие
+    btnNext.disabled = lastSlide;
+
+    stopScroll ();
+};
+
+const checkDots = () => {
+    dots.forEach(item => item.classList.remove('active'));
+    dots[index].classList.add('active');
 };
 
 const thisSlide = (index) => {
@@ -33,14 +44,11 @@ const thisSlide = (index) => {
     dots[index].classList.add('active');
 }
 
-//const swipeStart =
-//const swipeAction =
-//const swipeEnd =
-
 //EVENTLISTENERS
 btnNext.addEventListener ('click', () => {
-    const muveLeft = itemsCount - (Math.abs(position) + slidesToShow * itemWidth) / itemWidth;
-    position -= muveLeft >= slidesToScroll ? muvePosition : muveLeft * itemWidth;
+    //ограничения на количество слайдов в прокрутке
+    const slidesToMove = itemsCount - (Math.abs(position) + slidesToShow * itemWidth) / itemWidth;
+    position -= slidesToMove >= slidesToScroll ? muvePosition : slidesToMove * itemWidth;
     sliderIndex++;
     setPosition();
     checkBtns();
@@ -48,10 +56,21 @@ btnNext.addEventListener ('click', () => {
 });
 
 btnPrev.addEventListener ('click', () => {
-    const muveLeft = itemsCount - Math.abs(position)/ itemWidth;
-    position += muveLeft >= slidesToScroll ? muvePosition : muveLeft * itemWidth;
-    sliderIndex--;
-    setPosition();
-    checkBtns();
-    thisSlide(sliderIndex);
+    const slidesToMove = itemsCount - Math.abs(position)/ itemWidth;
+    if (position !== 0) {
+        //ограничения на количество слайдов в прокрутке
+        position += slidesToMove >= slidesToScroll ? muvePosition : slidesToMove * itemWidth;
+        sliderIndex--;
+        setPosition();
+        checkBtns();
+        thisSlide(sliderIndex);}
 });
+//переключатели по точкам
+dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+        position = -index * itemWidth;
+        setPosition();
+        thisSlide(index);
+        checkBtns();
+    });
+})
