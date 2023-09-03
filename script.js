@@ -66,11 +66,12 @@ btnPrev.addEventListener ('click', () => {
         thisSlide(sliderIndex);}
 });
 //переключатели по точкам
+//надо пофиксить баг - у точек рассинхрон с кнопками, если кликать по очереди точки и кнопки
 dots.forEach((dot, index) => {
     dot.addEventListener('click', () => {
         position = -index * itemWidth;
         setPosition();
-        thisSlide(index);
         checkBtns();
+        thisSlide(index);
     });
 })
